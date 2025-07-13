@@ -1,163 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Swipe Simon Game</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #111;
-      color: white;
-      flex-direction: column;
-      user-select: none;
-      text-align: center;
-    }
-    #gameArea {
-      width: 400px;
-      height: 400px;
-      background: #222;
-      border: 2px solid #444;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unique Direction</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" 
+      rel="stylesheet">
+      <link href="./style.css" rel="stylesheet" >
 </head>
 <body>
-
-<div id="gameArea">Swipe or Use Arrows</div>
-<div id="info">Click "Start" to play</div>
-<button onclick="startGame()">Start</button>
-
-<script>
-  const directions = ["up", "down", "left", "right"];
-  let gamePattern = [];
-  let userPattern = [];
-  let gameStarted = false;
-
-  const info = document.getElementById("info");
-  const gameArea = document.getElementById("gameArea");
-
-  function getRandomDirection() {
-    return directions[Math.floor(Math.random() * directions.length)];
-  }
-
-  function startGame() {
-    gamePattern = [];
-    userPattern = [];
-    gameStarted = true;
-    info.textContent = "Watch the pattern...";
-    addNextDirection();
-  }
-
-  function addNextDirection() {
-    const next = getRandomDirection();
-    gamePattern.push(next);
-    showPattern();
-  }
-
-  function showPattern() {
-    let index = 0;
-    info.textContent = "Memorize...";
-    const interval = setInterval(() => {
-      flashDirection(gamePattern[index]);
-      index++;
-      if (index >= gamePattern.length) {
-        clearInterval(interval);
-        userPattern = [];
-        info.textContent = "Now repeat the pattern";
-      }
-    }, 800);
-  }
-
-  function flashDirection(dir) {
-    gameArea.textContent = dir.toUpperCase();
-    gameArea.style.background = "#444";
-    setTimeout(() => {
-      gameArea.style.background = "#222";
-    }, 400);
-  }
-
-  function handleInput(direction) {
-    if (!gameStarted) return;
-    userPattern.push(direction);
-    flashDirection(direction);
-    const index = userPattern.length - 1;
-    if (userPattern[index] !== gamePattern[index]) {
-      gameOver();
-      return;
-    }
-    if (userPattern.length === gamePattern.length) {
-      setTimeout(() => {
-        addNextDirection();
-      }, 1000);
-    }
-  }
-
-  function gameOver() {
-    info.textContent = "❌ Wrong! Game Over!";
-    gameArea.textContent = "Game Over!";
-    gameStarted = false;
-  }
-
-  // Touch & Mouse Swipe Detection
-  let startX, startY;
-
-  function getSwipeDirection(dx, dy) {
-    if (Math.abs(dx) > Math.abs(dy)) {
-      return dx > 0 ? "right" : "left";
-    } else {
-      return dy > 0 ? "down" : "up";
-    }
-  }
-
-  gameArea.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  });
-
-  gameArea.addEventListener("touchend", (e) => {
-    const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-      handleInput(getSwipeDirection(dx, dy));
-    }
-  });
-
-  gameArea.addEventListener("mousedown", (e) => {
-    startX = e.clientX;
-    startY = e.clientY;
-  });
-
-  gameArea.addEventListener("mouseup", (e) => {
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-      handleInput(getSwipeDirection(dx, dy));
-    }
-  });
-
-  // Keyboard arrow input
-  document.addEventListener("keydown", (e) => {
-    if (!gameStarted) return;
-    switch (e.key) {
-      case "ArrowUp": handleInput("up"); break;
-      case "ArrowDown": handleInput("down"); break;
-      case "ArrowLeft": handleInput("left"); break;
-      case "ArrowRight": handleInput("right"); break;
-    }
-  });
-</script>
-
+    <div class="wrapper ">
+        <div class="gameArea">
+            <p id="gameText">Swipe or Use Arrows</p>
+            <div class="arrow"></div>
+        </div>
+    </div>
+    <div id="info">Click "Start" to play</div>
+    <button onclick="startGame()">Start</button>
 </body>
+<script src="./index.js"></script>
 </html>
