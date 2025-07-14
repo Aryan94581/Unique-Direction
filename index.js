@@ -45,10 +45,10 @@ function showPattern() {
     if (index >= gamePattern.length) {
       clearInterval(interval);
       userPattern = [];
-      gameAreaText.textContent = "";
+      gameText.textContent = "";
       info.textContent = "Now repeat the pattern";
     }
-  }, 1000);
+  }, 800);
 }
 
 function animateArrow(direction, color = "") {
