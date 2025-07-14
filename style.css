@@ -4,6 +4,16 @@
     box-sizing: border-box;
     font-family: 'poppins', sans-serif ;
 }
+
+body.noscroll, html.noscroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+  position: fixed; /* Prevents scrolling on mobile */
+  width: 100vw;
+  overscroll-behavior: contain;
+  touch-action: none; /* Optional: disables double-tap to zoom etc. */
+}
+
 body {
   width: 100%;
   height: 100vh;

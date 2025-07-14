@@ -36,6 +36,8 @@ function startGame() {
   gameStarted = true;
   startClock();
   levels = 0;
+  document.body.classList.add('noscroll');
+  document.documentElement.classList.add('noscroll');
   gameText.textContent = "";
   info.textContent = "Watch the pattern...";
   addNextDirection();
@@ -120,6 +122,8 @@ function gameOver() {
   wrapper.classList.add("hide");
   Button.classList.add("hide");
   resultBox.classList.remove("hide");
+   document.body.classList.remove('noscroll');
+  document.documentElement.classList.remove('noscroll');
   document.querySelector(".levels").innerHTML= levels;
   document.querySelector(".time").innerHTML = `${minutes}:${seconds}`;
 }
