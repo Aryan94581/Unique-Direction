@@ -1,122 +1,146 @@
+// Allowed directions
 const directions = ["up", "down", "left", "right"];
+
+// Game state
 let gamePattern = [];
 let userPattern = [];
 let gameStarted = false;
 
+// DOM elements
 const info = document.getElementById("info");
-const gameAreaText = document.getElementById("gameText");
+const gameText = document.getElementById("gameText");
 const arrow = document.querySelector(".arrow");
-const gameArea = document.querySelector(".gameArea");
+// const gameArea = document.querySelector(".gameArea");
+const wrapper = document.querySelector(".wrapper")
 
+// Utility: Pick a random direction
 function getRandomDirection() {
-  return directions[Math.floor(Math.random() * directions.length)];
+  const index = Math.floor(Math.random() * directions.length);
+  return directions[index];
 }
 
+// Start or restart the game
 function startGame() {
   gamePattern = [];
   userPattern = [];
   gameStarted = true;
-  gameAreaText.textContent = "";
+
   info.textContent = "Watch the pattern...";
+  gameText.textContent = "";
+
   addNextDirection();
 }
 
+// Add the next random direction to the pattern
 function addNextDirection() {
-  const next = getRandomDirection();
-  gamePattern.push(next);
+  const direction = getRandomDirection();
+  gamePattern.push(direction);
   showPattern();
 }
 
+// Show the full pattern to the user step by step
 function showPattern() {
-  let index = 0;
-  const interval = setInterval(() => {
-    animateArrow(gamePattern[index]);
-    index++;
-    if (index >= gamePattern.length) {
-      clearInterval(interval);
+  let i = 0;
+
+  const intervalId = setInterval(() => {
+    animateArrow(gamePattern[i]);
+    i++;
+
+    if (i >= gamePattern.length) {
+      clearInterval(intervalId);
+
       userPattern = [];
-      gameAreaText.textContent = "";
       info.textContent = "Now repeat the pattern";
+      gameText.textContent = "";
     }
   }, 1000);
 }
 
-function animateArrow(direction) {
-  arrow.classList.remove("up", "down", "left", "right"); // remove previous
-  void arrow.offsetWidth; // force reflow to restart animation
-  arrow.classList.add(direction); // add new
+function animateArrow(direction, color = "") {
+  // Reset to base class
+  arrow.className = "arrow";
+
+  // Force reflow to reset animation
+  void arrow.offsetWidth;
+
+  // Add direction class
+  arrow.classList.add(direction);
+
+  // Optionally change color class
+  if (color === "green") {
+    arrow.classList.add("green");
+    // Remove green after animation ends
+    setTimeout(() => {
+      arrow.classList.remove("green");
+    }, 800);
+  }
 }
+
 
 function handleInput(direction) {
   if (!gameStarted) return;
 
   userPattern.push(direction);
-  animateArrow(direction);
+  animateArrow(direction, "green"); // ✅ green for user input
 
-  const index = userPattern.length - 1;
-  if (userPattern[index] !== gamePattern[index]) {
-    gameOver();
-    return;
+  const currentIndex = userPattern.length - 1;
+
+  if (userPattern[currentIndex] !== gamePattern[currentIndex]) {
+    return gameOver();
   }
 
   if (userPattern.length === gamePattern.length) {
-    setTimeout(() => {
-      addNextDirection();
-    }, 800);
+    setTimeout(addNextDirection, 800);
   }
 }
 
+
+// End the game
 function gameOver() {
   info.textContent = "❌ Wrong! Game Over!";
-  gameAreaText.textContent = "Game Over!";
+  gameText.textContent = "Game Over!";
   gameStarted = false;
 }
 
-// Swipes Deduct
-let startX, startY;
+// Calculate swipe direction based on movement delta
+function getSwipeDirection(dx, dy) {
+  return Math.abs(dx) > Math.abs(dy)
+    ? dx > 0 ? "right" : "left"
+    : dy > 0 ? "down" : "up";
+}
 
-  function getSwipeDirection(dx, dy) {
-    if (Math.abs(dx) > Math.abs(dy)) {
-      return dx > 0 ? "right" : "left";
-    } else {
-      return dy > 0 ? "down" : "up";
-    }
+// Touch input handlers
+let startX = 0;
+let startY = 0;
+
+wrapper.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+});
+
+wrapper.addEventListener("touchend", (e) => {
+  const dx = e.changedTouches[0].clientX - startX;
+  const dy = e.changedTouches[0].clientY - startY;
+
+  if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+    const direction = getSwipeDirection(dx, dy);
+    handleInput(direction);
   }
+});
 
-  gameArea.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  });
+// Keyboard arrow key support
+document.addEventListener("keydown", (e) => {
+  if (!gameStarted) return;
 
-  gameArea.addEventListener("touchend", (e) => {
-    const dx = e.changedTouches[0].clientX - startX;
-    const dy = e.changedTouches[0].clientY - startY;
-    if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-      handleInput(getSwipeDirection(dx, dy));
-    }
-  });
+  const keyMap = {
+    ArrowUp: "up",
+    ArrowDown: "down",
+    ArrowLeft: "left",
+    ArrowRight: "right"
+  };
 
-  gameArea.addEventListener("mousedown", (e) => {
-    startX = e.clientX;
-    startY = e.clientY;
-  });
-
-  gameArea.addEventListener("mouseup", (e) => {
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
-      handleInput(getSwipeDirection(dx, dy));
-    }
-  });
-
-  // Keyboard arrow input
-  document.addEventListener("keydown", (e) => {
-    if (!gameStarted) return;
-    switch (e.key) {
-      case "ArrowUp": handleInput("up"); break;
-      case "ArrowDown": handleInput("down"); break;
-      case "ArrowLeft": handleInput("left"); break;
-      case "ArrowRight": handleInput("right"); break;
-    }
-  });
-//   Swipe Deduct over
+  const direction = keyMap[e.key];
+  if (direction) {
+    handleInput(direction);
+  }
+});
