@@ -48,6 +48,10 @@ function reset(){
   levels = 0;
   minutes = 0;    
   seconds = 0;
+  arrow.className = "arrow";
+
+  // Optional: Also hide the arrow initially
+  arrow.classList.add("hide");
 }
 // Add the next random direction to the pattern
 function addNextDirection() {
