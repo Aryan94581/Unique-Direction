@@ -16,14 +16,20 @@ body {
   overscroll-behavior-y: none;
 }
 .wrapper {
-  height: 375px;
-  width: 375px;
+  height: 60%;
+  width: 93%;
   background: #f8f8f8;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+#info{
+    font-size: 1.5rem;
+  }
+  #gameText{
+    font-size: 1.2rem;
+  }
 .gameArea {
   position: relative;
   width: 200px;
@@ -34,7 +40,7 @@ body {
 }
 button {
   padding: 10px 20px;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
   background: #f8f8f8;
   border-radius: 10px;
@@ -146,10 +152,10 @@ button {
 }
 /* Animation over  */
 
-@media (min-width: 500px) {
+@media (min-width: 700px) {
   .wrapper{
-    height: 550px;
-    width: 550px;
+    height: 600px;
+    width: 650px;
   }
   .gameArea{
     height: 300px;
@@ -158,9 +164,6 @@ button {
   button{
   padding: 10px 25px;
   font-size: 2rem;
-  }
-  #info{
-    font-size: 1.5rem;
   }
   #gameText{
     font-size: 1.5rem;
