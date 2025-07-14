@@ -23,6 +23,10 @@ const newGame = document.querySelector(".newGame");
 function getRandomDirection() {
   return directions[Math.floor(Math.random() * directions.length)];
 }
+document.querySelector(".startBtn").addEventListener("click", function(){
+  startGame();
+  this.classList.add("hide");
+})
 
 
 // Start or restart the game
@@ -122,6 +126,7 @@ newGame.addEventListener("click", function(){
     resultBox.classList.add("hide");
     arrow.classList.add("hide");
     reset();
+    document.querySelector(".startBtn").classList.remove("hide");
 })
 
 function startClock() {
