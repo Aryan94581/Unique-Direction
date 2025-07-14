@@ -15,43 +15,38 @@ const wrapper = document.querySelector(".wrapper")
 
 // Utility: Pick a random direction
 function getRandomDirection() {
-  const index = Math.floor(Math.random() * directions.length);
-  return directions[index];
+  return directions[Math.floor(Math.random() * directions.length)];
 }
+
 
 // Start or restart the game
 function startGame() {
   gamePattern = [];
   userPattern = [];
   gameStarted = true;
-
-  info.textContent = "Watch the pattern...";
   gameText.textContent = "";
-
+  info.textContent = "Watch the pattern...";
   addNextDirection();
+  arrow.classList.remove("hide");
 }
 
 // Add the next random direction to the pattern
 function addNextDirection() {
-  const direction = getRandomDirection();
-  gamePattern.push(direction);
+  const next = getRandomDirection();
+  gamePattern.push(next);
   showPattern();
 }
-
 // Show the full pattern to the user step by step
 function showPattern() {
-  let i = 0;
-
-  const intervalId = setInterval(() => {
-    animateArrow(gamePattern[i]);
-    i++;
-
-    if (i >= gamePattern.length) {
-      clearInterval(intervalId);
-
+  let index = 0;
+  const interval = setInterval(() => {
+    animateArrow(gamePattern[index]);
+    index++;
+    if (index >= gamePattern.length) {
+      clearInterval(interval);
       userPattern = [];
+      gameAreaText.textContent = "";
       info.textContent = "Now repeat the pattern";
-      gameText.textContent = "";
     }
   }, 1000);
 }
@@ -83,10 +78,10 @@ function handleInput(direction) {
   userPattern.push(direction);
   animateArrow(direction, "green"); // ✅ green for user input
 
-  const currentIndex = userPattern.length - 1;
-
-  if (userPattern[currentIndex] !== gamePattern[currentIndex]) {
-    return gameOver();
+  const index = userPattern.length - 1;
+  if (userPattern[index] !== gamePattern[index]) {
+    gameOver();
+    return;
   }
 
   if (userPattern.length === gamePattern.length) {

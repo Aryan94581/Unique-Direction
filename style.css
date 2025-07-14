@@ -46,7 +46,7 @@ button {
 /* Animation Direction */
 .arrow {
     position: absolute;
-    top: -80%;
+    /* top: -80%; */
     color: white;
     background-color: #ff8000;
     height: 50px;
@@ -58,6 +58,9 @@ button {
   }
   .arrow.green {   /*  because we are updating in same class. */
   background-color: green;
+  }
+  .arrow.hide{
+    display: none;
   }
 
 
