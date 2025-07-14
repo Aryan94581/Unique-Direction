@@ -46,7 +46,81 @@ button {
   border-radius: 10px;
   border: none;
 }
+.btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
+/* Result box */
+.resultBox{
+    height: 400px;
+    width: 400px;
+    padding: 25px;
+    background: #f8f8f8;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+}
+.upperSection{
+    height: 60%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+}
+.upperSection .headline{
+    font-size: 2.5rem;
+    color: #ff8000;
+}
+.resultBoxRow{
+    width: 100%;
+    height: 35%;
+    display: flex;
+    align-items:end;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 2px 15px;
+    color: #ff8000;
+
+    background:#fff;
+    border-radius: 7px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+
+}
+.time{
+    color: #5cbcf8;
+
+}
+.mistakes{
+    color: #5cbcf8;
+     margin-right: 50px ;
+}
+.resultBox button{
+    height: 70px;
+    width: 90%;
+    border-radius: 10px;
+    margin : 10px 20px;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: #ff8000;
+    border: 0px;
+    cursor: pointer;
+    /* box-shadow: 0 3px 10px rgba(0,0,0,0.1); */
+}
+.newGame span{
+    color: #5cbcf8 ;
+}
+
+.hide{
+  display: none;
+}
 /* Animation Direction */
 .arrow {
   position: absolute;

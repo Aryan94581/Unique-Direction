@@ -5,13 +5,19 @@ const directions = ["up", "down", "left", "right"];
 let gamePattern = [];
 let userPattern = [];
 let gameStarted = false;
+let levels = 0;
+let minutes = 0;    
+let seconds = 0;
+let timer;
 
 // DOM elements
 const info = document.getElementById("info");
 const gameText = document.getElementById("gameText");
 const arrow = document.querySelector(".arrow");
-// const gameArea = document.querySelector(".gameArea");
-const wrapper = document.querySelector(".wrapper")
+const wrapper = document.querySelector(".wrapper");
+const Button = document.querySelector(".btn");
+const resultBox = document.querySelector(".resultBox");
+const newGame = document.querySelector(".newGame");
 
 // Utility: Pick a random direction
 function getRandomDirection() {
@@ -24,16 +30,26 @@ function startGame() {
   gamePattern = [];
   userPattern = [];
   gameStarted = true;
+  startClock();
+  levels = 0;
   gameText.textContent = "";
   info.textContent = "Watch the pattern...";
   addNextDirection();
   arrow.classList.remove("hide");
 }
-
+function reset(){
+  gamePattern = [];
+  userPattern = [];
+  gameStarted = false;
+  levels = 0;
+  minutes = 0;    
+  seconds = 0;
+}
 // Add the next random direction to the pattern
 function addNextDirection() {
   const next = getRandomDirection();
   gamePattern.push(next);
+  levels++;
   showPattern();
 }
 // Show the full pattern to the user step by step
@@ -92,11 +108,32 @@ function handleInput(direction) {
 
 // End the game
 function gameOver() {
-  info.textContent = "❌ Wrong! Game Over!";
-  gameText.textContent = "Game Over!";
-  gameStarted = false;
+   gameStarted = false;
+  wrapper.classList.add("hide");
+  Button.classList.add("hide");
+  resultBox.classList.remove("hide");
+  document.querySelector(".levels").innerHTML= levels;
+  document.querySelector(".time").innerHTML = `${minutes}:${seconds}`;
 }
 
+newGame.addEventListener("click", function(){
+    wrapper.classList.remove("hide");
+    Button.classList.remove("hide");
+    resultBox.classList.add("hide");
+    arrow.classList.add("hide");
+    reset();
+})
+
+function startClock() {
+  clearInterval(timer);
+  timer = setInterval(() => {
+    seconds++;
+    if (seconds === 60) {
+      seconds = 0;
+      minutes++;
+    }
+  }, 1000);
+}
 // Calculate swipe direction based on movement delta
 function getSwipeDirection(dx, dy) {
   return Math.abs(dx) > Math.abs(dy)
